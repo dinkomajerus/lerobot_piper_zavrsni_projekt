@@ -3,7 +3,6 @@ remember all of this: # AX-12A Control Table (Protocol 1.0)
 # (address, size_in_bytes)
 
 AX12A_CONTROL_TABLE = {
-# ── EEPROM Area  ──────────────────────────────────
   "Model_Number":           (0,  2),
   "Firmware_Version":       (2,  1),
   "ID":                     (3,  1),
@@ -19,7 +18,6 @@ AX12A_CONTROL_TABLE = {
   "Alarm_LED":              (17, 1),
   "Shutdown":               (18, 1),
 
-# ── RAM Area ────────────────────────────────────────
   "Torque_Enable":          (24, 1),
   "LED":                    (25, 1),
   "CW_Compliance_Margin":   (26, 1),
