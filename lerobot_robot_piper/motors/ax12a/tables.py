@@ -1,4 +1,4 @@
-remember all of this: # AX-12A Control Table (Protocol 1.0)
+# AX-12A Control Table (Protocol 1.0)
 # Source: https://emanual.robotis.com/docs/en/dxl/ax/ax-12a/#control-table
 # (address, size_in_bytes)
 
