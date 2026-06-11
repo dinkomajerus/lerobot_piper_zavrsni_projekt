@@ -186,18 +186,6 @@ class AX12ABus:
             self._write("Torque_Enable", motor_id, 1)
         print("Torque enabled.")
 
-    def is_moving(self) -> dict:
-        return {
-            name: bool(self._read("Moving", motor_id))
-            for name, motor_id in self.motors.items()
-        }
-
-    def read_temperature(self) -> dict:
-        return {
-            name: self._read("Present_Temperature", motor_id)
-            for name, motor_id in self.motors.items()
-        }
-
     def set_compliance_slope(self, cw: int = 32, ccw: int = 32):
         for name, motor_id in self.motors.items():
             self._write("CW_Compliance_Slope",  motor_id, cw)
