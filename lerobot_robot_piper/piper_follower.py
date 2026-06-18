@@ -99,7 +99,7 @@ class PiperFollower(Robot):
     def calibrate(self) -> None:
         if self.gripper_bus is None:
             return
-        print("Calibrating AX-12A gripper...")
+        print("Calibrating AX-12A...")
         self.gripper_bus.disable_torque()
         #input("Move gripper to MIDDLE of its range, then press ENTER...")
         #self.gripper_bus.set_midpoint()
