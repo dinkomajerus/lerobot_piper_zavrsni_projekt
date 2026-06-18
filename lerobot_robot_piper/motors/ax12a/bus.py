@@ -60,12 +60,12 @@ class AX12ABus:
         self._connected = True
         
         for name, motor_id in self.motors.items():
-            cw  = self._read("CW_Angle_Limit",  motor_id)
-            ccw = self._read("CCW_Angle_Limit", motor_id)
+            cw  = self.read("CW_Angle_Limit",  motor_id)
+            ccw = self.read("CCW_Angle_Limit", motor_id)
             if cw == 0 and ccw == 0:
                 print(f"Motor '{name}' is in wheel mode — switching to joint mode")
-                self._write("CW_Angle_Limit",  motor_id, 0)
-                self._write("CCW_Angle_Limit", motor_id, 1023)
+                self.write("CW_Angle_Limit",  motor_id, 0)
+                self.write("CCW_Angle_Limit", motor_id, 1023)
 
         self.enable_torque()
         self.set_compliance_margin(cw=0, ccw=0)
@@ -87,7 +87,7 @@ class AX12ABus:
     def is_calibrated(self):
         return self._calibrated
 
-    def _write(self, register: str, motor_id: int, value: int):
+    def write(self, register: str, motor_id: int, value: int):
         if register not in AX12A_CONTROL_TABLE:
             raise KeyError(f"Unknown register: '{register}'")
 
@@ -110,7 +110,7 @@ class AX12ABus:
                 f"{self.packet_handler.getTxRxResult(result)}"
             )
 
-    def _read(self, register: str, motor_id: int) -> int:
+    def read(self, register: str, motor_id: int) -> int:
         if register not in AX12A_CONTROL_TABLE:
             raise KeyError(f"Unknown register: '{register}'")
 
@@ -155,7 +155,7 @@ class AX12ABus:
         for name in motor_names:
             if name not in self.motors:
                 raise KeyError(f"Unknown motor: '{name}'")
-            raw = self._read(register, self.motors[name])
+            raw = self.read(register, self.motors[name])
             result[name] = (
                 self._normalize(name, raw)
                 if register == "Present_Position"
@@ -172,34 +172,34 @@ class AX12ABus:
                 if register == "Goal_Position"
                 else int(value)
             )
-            self._write(register, self.motors[name], raw)
+            self.write(register, self.motors[name], raw)
             if register == "Goal_Position":
-                current = self._read("Present_Position", self.motors[name])
+                current = self.read("Present_Position", self.motors[name])
 
     def disable_torque(self):
         for name, motor_id in self.motors.items():
-            self._write("Torque_Enable", motor_id, 0)
+            self.write("Torque_Enable", motor_id, 0)
         print("Torque disabled.")
 
     def enable_torque(self):
         for name, motor_id in self.motors.items():
-            self._write("Torque_Enable", motor_id, 1)
+            self.write("Torque_Enable", motor_id, 1)
         print("Torque enabled.")
 
     def set_compliance_slope(self, cw: int = 32, ccw: int = 32):
         for name, motor_id in self.motors.items():
-            self._write("CW_Compliance_Slope",  motor_id, cw)
-            self._write("CCW_Compliance_Slope", motor_id, ccw)
+            self.write("CW_Compliance_Slope",  motor_id, cw)
+            self.write("CCW_Compliance_Slope", motor_id, ccw)
 
     def set_compliance_margin(self, cw: int = 1, ccw: int = 1):
         for name, motor_id in self.motors.items():
-            self._write("CW_Compliance_Margin",  motor_id, cw)
-            self._write("CCW_Compliance_Margin", motor_id, ccw)
+            self.write("CW_Compliance_Margin",  motor_id, cw)
+            self.write("CCW_Compliance_Margin", motor_id, ccw)
 
     def set_midpoint(self):
         self._midpoints = {}
         for name, motor_id in self.motors.items():
-            self._midpoints[name] = self._read("Present_Position", motor_id)
+            self._midpoints[name] = self.read("Present_Position", motor_id)
         print(f"Midpoints recorded: {self._midpoints}")
 
     def record_ranges_of_motion(self):
@@ -213,7 +213,7 @@ class AX12ABus:
             while not stop_event.is_set():
                 for name, motor_id in self.motors.items():
                     try:
-                        pos = self._read("Present_Position", motor_id)
+                        pos = self.read("Present_Position", motor_id)
                         print(f"record_loop read: {pos}", flush=True)
                         self._cal_min[name] = min(self._cal_min[name], pos)
                         self._cal_max[name] = max(self._cal_max[name], pos)
