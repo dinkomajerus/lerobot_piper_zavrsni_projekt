@@ -599,5 +599,5 @@ class KeyboardJointTeleop(KeyboardTeleop):
     @check_if_not_connected
     def disconnect(self) -> None:
         self._running = False
-        if self.listener is not None:
-            self.listener.stop()
+        if self._thread is not None and self._thread.is_alive():
+            self._thread.join(timeout=1.0)
