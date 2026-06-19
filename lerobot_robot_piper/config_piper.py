@@ -7,7 +7,6 @@ from lerobot.robots import RobotConfig
 @dataclass(kw_only=True)
 class PiperFollowerConfig(RobotConfig):
   
-  calibration_dir: Path | None = None
   can_interface: str = "can0"
   port: str = "/dev/ttyUSB0"
   bitrate: int = 1_000_000
