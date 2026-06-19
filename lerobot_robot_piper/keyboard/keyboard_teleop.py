@@ -530,7 +530,7 @@ class KeyboardJointTeleop(KeyboardTeleop):
     def is_connected(self) -> bool:
         return self._running
 
-    def _read_keys(self):
+    def read_keys(self):
         import tty
         import termios
         import select
@@ -574,7 +574,7 @@ class KeyboardJointTeleop(KeyboardTeleop):
     @check_if_not_connected
     def get_action(self) -> dict:
         if self._thread is None or not self._thread.is_alive():
-            self._thread = threading.Thread(target=self._read_keys, daemon=True)
+            self._thread = threading.Thread(target=self.read_keys, daemon=True)
             self._thread.start()
             time.sleep(0.1)
 
