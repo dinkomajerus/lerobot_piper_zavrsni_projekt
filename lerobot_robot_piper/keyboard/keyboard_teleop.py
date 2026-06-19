@@ -21,6 +21,9 @@ import time
 import threading
 from queue import Queue
 from typing import Any
+import tty
+import termios
+import select
 
 from lerobot.types import RobotAction
 from lerobot.utils.decorators import check_if_already_connected, check_if_not_connected
@@ -529,10 +532,6 @@ class KeyboardJointTeleop(KeyboardTeleop):
         return self._running
 
     def read_keys(self):
-        import tty
-        import termios
-        import select
-
         with open("/dev/tty", "rb", buffering=0) as tty_file:
             fd = tty_file.fileno()
             old = termios.tcgetattr(fd)
