@@ -135,7 +135,7 @@ class AX12ABus:
 
         return value
 
-    def _normalize(self, name: str, raw: int) -> float:
+    def normalize(self, name: str, raw: int) -> float:
         cal_min = self._cal_min[name]
         cal_max = self._cal_max[name]
         if cal_max == cal_min:
@@ -143,7 +143,7 @@ class AX12ABus:
         normalized = (raw - cal_min) / (cal_max - cal_min)
         return (normalized * 200.0) - 100.0
 
-    def _denormalize(self, name: str, value: float) -> int:
+    def denormalize(self, name: str, value: float) -> int:
         cal_min = self._cal_min[name]
         cal_max = self._cal_max[name]
         normalized = (value + 100.0) / 200.0
