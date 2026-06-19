@@ -26,6 +26,7 @@ from lerobot.types import RobotAction
 from lerobot.utils.decorators import check_if_already_connected, check_if_not_connected
 from lerobot.utils.import_utils import _pynput_available, require_package
 
+from piper_sdk import C_PiperInterface_V2
 from lerobot.teleoparators.teleoperator import Teleoperator
 from lerobot.teleoperators.utils import TeleopEvents
 from .configuration_keyboard import (
@@ -439,9 +440,7 @@ class KeyboardRoverTeleop(KeyboardTeleop):
 class KeyboardJointTeleop(KeyboardTeleop):
     config_class = KeyboardJointTeleopConfig
     name = "keyboard_joint"
-
-
-
+    
     KEY_MAP = {
         "1": ("shoulder_pan.pos",   +1),
         "2": ("shoulder_pan.pos",   -1),
@@ -500,7 +499,6 @@ class KeyboardJointTeleop(KeyboardTeleop):
         self._thread = None
 
         try:
-            from piper_sdk import C_PiperInterface_V2
             tmp = C_PiperInterface_V2("can0")
             tmp.ConnSectPort()
             time.sleep(0.1)
